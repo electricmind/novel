@@ -16,13 +16,14 @@ import akka.pattern.ask
 
 object NovelServiceActor {
     abstract sealed trait EnWizMessage
-    def props(counterprop: Props): Props =
-        Props(new NovelServiceActor(counterprop))
+    def props(counterprop: Props, poolprop : Props): Props =
+        Props(new NovelServiceActor(counterprop, poolprop))
 }
 
-class NovelServiceActor(counterprop: Props) extends Actor with NovelService {
+class NovelServiceActor(counterprop: Props, poolprop: Props) extends Actor with NovelService {
 
   val counter = context.actorOf(counterprop, "Parser") 
+  val pool = context.actorOf(poolprop, "Pool") 
     
   // the HttpService trait defines only one abstract member, which
   // connects the services environment to the enclosing actor or test
